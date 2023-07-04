@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="pt" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    	<link href='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZvkaXz0ycrIvvoXGhx0Z1Fj2oYdb-Hvpmw0dmXjANx64qjmXfyD4fXR695Aqs6mwPNl2L-KTanCOAODXoLbSmOK34pAkp68XdIn37u9mHEFyxHy8O-2RMNf1bO0HeAdoT9oDBCK6qo0J6wG0lTL6qN7yoRJELRwjrlGjOtjA21gUwdTZI1S3zBce2/s1600/carretilha.png' rel='apple-touch-icon' sizes='180x180'/>
+<link href='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZvkaXz0ycrIvvoXGhx0Z1Fj2oYdb-Hvpmw0dmXjANx64qjmXfyD4fXR695Aqs6mwPNl2L-KTanCOAODXoLbSmOK34pAkp68XdIn37u9mHEFyxHy8O-2RMNf1bO0HeAdoT9oDBCK6qo0J6wG0lTL6qN7yoRJELRwjrlGjOtjA21gUwdTZI1S3zBce2/s1600/carretilha.png' rel='icon' sizes='32x32' type='image/png'/>
+<link href='https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZvkaXz0ycrIvvoXGhx0Z1Fj2oYdb-Hvpmw0dmXjANx64qjmXfyD4fXR695Aqs6mwPNl2L-KTanCOAODXoLbSmOK34pAkp68XdIn37u9mHEFyxHy8O-2RMNf1bO0HeAdoT9oDBCK6qo0J6wG0lTL6qN7yoRJELRwjrlGjOtjA21gUwdTZI1S3zBce2/s1600/carretilha.png' rel='icon' sizes='16x16' type='image/png'/>
+    <title>Movie Mil Playerr</title>
+    <meta content='Veja Os Melhores e mais Recentes Filmes Aqui! no Movie Mill' name='description'/>
+    <link rel="stylesheet" href="style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', sans-serif;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+body, .container, .video-controls, .video-timer, .options{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+}
+.container{
+  user-select: none;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  aspect-ratio: 16 / 9;
+  position: relative;
+}
+.container.fullscreen{
+  max-width: 100%;
+  width: 100%;
+  height: 100vh;
+  border-radius: 0px;
+}
+.wrapper{
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  opacity: 0;
+  bottom: -15px;
+  transition: all 0.08s ease;
+}
+.container.show-controls .wrapper{
+  opacity: 1;
+  bottom: 0;
+  transition: all 0.13s ease;
+}
+.wrapper::before{
+  content: "";
+  bottom: 0;
+  width: 100%;
+  z-index: -1;
+  position: absolute;
+  height: calc(100% + 35px);
+  pointer-events: none;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+}
+.video-timeline{
+  height: 7px;
+  width: 100%;
+  cursor: pointer;
+}
+.video-timeline .progress-area{
+  height: 3px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.6);
+}
+.progress-area span{
+  position: absolute;
+  left: 50%;
+  top: -25px;
+  font-size: 13px;
+  color: #fff;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+.progress-area .progress-bar{
+  width: 0%;
+  height: 100%;
+  position: relative;
+  background: #e91e63;
+}
+.progress-bar::before{
+  content: "";
+  right: 0;
+  top: 50%;
+  height: 13px;
+  width: 13px;
+  position: absolute;
+  border-radius: 50%;
+  background: #e91e63;
+  transform: translateY(-50%);
+}
+.progress-bar::before, .progress-area span{
+  display: none;
+}
+.video-timeline:hover .progress-bar::before,
+.video-timeline:hover .progress-area span{
+  display: block;
+}
+.wrapper .video-controls{
+  padding: 5px 20px 10px;
+}
+.video-controls .options{
+  width: 100%;
+}
+.video-controls .options:first-child{
+  justify-content: flex-start;
+}
+.video-controls .options:last-child{
+  justify-content: flex-end;
+}
+.options button{
+  height: 40px;
+  width: 40px;
+  font-size: 19px;
+  border: none;
+  cursor: pointer;
+  background: none;
+  color: #efefef;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+.options button :where(i, span) {
+  height: 100%;
+  width: 100%;
+  line-height: 40px;
+}
+.options button:hover :where(i, span){
+  color: #fff;
+}
+.options button:active :where(i, span){
+  transform: scale(0.9);
+}
+.options button span{
+  font-size: 23px;
+}
+.options input{
+  height: 4px;
+  margin-left: 3px;
+  max-width: 75px;
+  accent-color: #e91e63;
+}
+.options .video-timer{
+  color: #efefef;
+  margin-left: 15px;
+  font-size: 14px;
+}
+.video-timer .separator{
+  margin: 0 5px;
+  font-size: 16px;
+  font-family: "Open sans";
+}
+.playback-content{
+  display: flex;
+  position: relative;
+}
+.playback-content .speed-options{
+  position: absolute;
+  list-style: none;
+  left: -40px;
+  bottom: 40px;
+  width: 95px;
+  overflow: hidden;
+  opacity: 0;
+  border-radius: 4px;
+  pointer-events: none;
+  background: rgba(24, 31, 43, 0.9);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.13s ease;
+}
+.playback-content .speed-options.show{
+  opacity: 1;
+  pointer-events: auto;
+}
+.speed-options li{
+  cursor: pointer;
+  color: #ededed;
+  font-size: 14px;
+  margin: 2px 0;
+  padding: 5px 0 5px 15px;
+  transition: all 0.1s ease;
+}
+.speed-options li:where(:first-child, :last-child){
+  margin: 0px;
+}
+.speed-options li:hover{
+  background: #dfdfdf;
+}
+.speed-options li.active{
+  color: #fff;
+  background: #e91e63;
+}
+.container video{
+  width: 100%;
+}
+
+@media screen and (max-width: 540px) {
+  .wrapper .video-controls{
+    padding: 3px 10px 7px;
+  }
+  .options input, .progress-area span{
+    display: none!important;
+  }
+  .options button{
+    height: 30px;
+    width: 30px;
+    font-size: 17px;
+  }
+  .options .video-timer{
+    margin-left: 5px;
+  }
+  .video-timer .separator{
+    font-size: 14px;
+    margin: 0 2px;
+  }
+  .options button :where(i, span) {
+    line-height: 30px;
+  }
+  .options button span{
+    font-size: 21px;
+  }
+  .options .video-timer, .progress-area span, .speed-options li{
+    font-size: 12px;
+  }
+  .playback-content .speed-options{
+    width: 75px;
+    left: -30px;
+    bottom: 30px;
+  }
+  .speed-options li{
+    margin: 1px 0;
+    padding: 3px 0 3px 10px;
+  }
+  .right .pic-in-pic{
+    display: none;
+  }
+}
+.opss{
+background-color:#10151d;
+width:100%;
+height:100%;
+z-index:900;
+display:none;
+position:fixed;
+z-index:900;
+justify-content:center;
+align-items:center;
+color:#fff;
+flex-direction:column;
+}
+.opss h3{
+margin-top:20px;
+font-size:30px;
+font-weight:500;
+}
+.opss img{
+width:200px;
+}
+.oprr{
+background-color:#10151d;
+width:100%;
+height:100%;
+z-index:900;
+display:flex;
+position:fixed;
+z-index:900;
+justify-content:center;
+align-items:center;
+color:#fff;
+flex-direction:column;
+}
+.preload-container {
+  display: flex;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #10151d;
+  overflow-y: hidden;
+  flex-direction: column;
+}
+.preloadC{
+      width: 100%;
+  height: 100%;
+   flex-direction: column;
+   display:flex;
+justify-content: center;
+align-items: center;
+      }
+.preload-spinner {
+  margin-left:55px;
+  transform: translate(-50%, -50%);
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #e91e63;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+.preload-message {
+  margin-left:78px;
+  transform: translate(-50%, -50%);
+  color: #f3f3f3;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+}
+
+@keyframes spin {
+  0% { transform: translate(-50%, -50%) rotate(0deg); }
+  100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+.psload{
+background-color:#10151d;
+width:100%;
+height:100%;
+z-index:900;
+display:flex;
+position:fixed;
+z-index:900;
+justify-content:center;
+align-items:center;
+color:#fff;
+flex-direction:column;
+}
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-out {
+  animation: fadeOut 0.5s ease-in-out forwards;
+}
+
+   </style>
+  </head>
+  <body>
+
+<div class="psload">
+<div class="opss">
+<img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhoV-s5RB5NZvyHw8bIT-k5NpsL20PJ-N-iAAFH8jmnHmMZT-J83HfN9zlxvU_SbgtNVIVLX6-PUHe5kMoBZq0MEjrx0WA6dqiH-m04kP1a77-XnD3VjWhsg10Ag84D8w8rOGQZq3unJLL5mDyER6v94pGi_XwsMvsvM5CTALJkqNh6hLj3bh6O-yKRGwLE/s1600/20230704_000002.png"/>
+<h3>Ops! Filme Indisponível</h3>
+</div>
+<div class="oprr">
+ <div class='preload-container' id='preload'>
+          <div class='preloadC'>
+  <div class='preload-spinner'></div>
+  <p class='preload-message'>Loading</p>
+  </div>
+</div>
+</div>
+</div>
+    <div class="container show-controls">
+        <div class="wrapper">
+            <div class="video-timeline">
+                <div class="progress-area">
+                    <span>00:00</span>
+                    <div class="progress-bar"></div>
+                </div>
+            </div>
+            <ul class="video-controls">
+                <li class="options left">
+                    <button class="volume"><i class="fa-solid fa-volume-high"></i></button>
+                    <input type="range" min="0" max="1" step="any">
+                    <div class="video-timer">
+                        <p class="current-time">00:00</p>
+                        <p class="separator"> / </p>
+                        <p class="video-duration">00:00</p>
+                    </div>
+                </li>
+                <li class="options center">
+                    <button class="skip-backward"><i class="fas fa-backward"></i></button>
+                    <button class="play-pause"><i class="fas fa-play"></i></button>
+                    <button class="skip-forward"><i class="fas fa-forward"></i></button>
+                </li>
+                <li class="options right">
+                    <div class="playback-content">
+                        <button class="playback-speed">
+<span class="material-symbols-rounded">slow_motion_video</span></button>
+                        <ul class="speed-options">
+                            <li data-speed="2">2x</li>
+                            <li data-speed="1.5">1.5x</li>
+                            <li data-speed="1" class="active">Normal</li>
+                            <li data-speed="0.75">0.75x</li>
+                            <li data-speed="0.5">0.5x</li>
+                        </ul>
+                    </div>
+                    <button class="pic-in-pic"><span class="material-icons">picture_in_picture_alt</span></button>
+                    <button class="fullscreen"><i class="fa-solid fa-expand"></i></button>
+                </li>
+            </ul>
+        </div>
+        <video id="video-id"></video>
+    </div>
+    <script>
+ 
+    function addFavicons() {
+  var favicons = [
+    { href: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZvkaXz0ycrIvvoXGhx0Z1Fj2oYdb-Hvpmw0dmXjANx64qjmXfyD4fXR695Aqs6mwPNl2L-KTanCOAODXoLbSmOK34pAkp68XdIn37u9mHEFyxHy8O-2RMNf1bO0HeAdoT9oDBCK6qo0J6wG0lTL6qN7yoRJELRwjrlGjOtjA21gUwdTZI1S3zBce2/s1600/carretilha.png', rel: 'icon', sizes: '16x16', type: 'image/png' },
+    { href: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZvkaXz0ycrIvvoXGhx0Z1Fj2oYdb-Hvpmw0dmXjANx64qjmXfyD4fXR695Aqs6mwPNl2L-KTanCOAODXoLbSmOK34pAkp68XdIn37u9mHEFyxHy8O-2RMNf1bO0HeAdoT9oDBCK6qo0J6wG0lTL6qN7yoRJELRwjrlGjOtjA21gUwdTZI1S3zBce2/s1600/carretilha.png', rel: 'icon', sizes: '32x32', type: 'image/png' },
+    { href: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZvkaXz0ycrIvvoXGhx0Z1Fj2oYdb-Hvpmw0dmXjANx64qjmXfyD4fXR695Aqs6mwPNl2L-KTanCOAODXoLbSmOK34pAkp68XdIn37u9mHEFyxHy8O-2RMNf1bO0HeAdoT9oDBCK6qo0J6wG0lTL6qN7yoRJELRwjrlGjOtjA21gUwdTZI1S3zBce2/s1600/carretilha.png', rel: 'icon', sizes: '48x48', type: 'image/png' },
+    { href: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZvkaXz0ycrIvvoXGhx0Z1Fj2oYdb-Hvpmw0dmXjANx64qjmXfyD4fXR695Aqs6mwPNl2L-KTanCOAODXoLbSmOK34pAkp68XdIn37u9mHEFyxHy8O-2RMNf1bO0HeAdoT9oDBCK6qo0J6wG0lTL6qN7yoRJELRwjrlGjOtjA21gUwdTZI1S3zBce2/s1600/carretilha.png', rel: 'icon', sizes: '64x64', type: 'image/png' },
+    { href: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZvkaXz0ycrIvvoXGhx0Z1Fj2oYdb-Hvpmw0dmXjANx64qjmXfyD4fXR695Aqs6mwPNl2L-KTanCOAODXoLbSmOK34pAkp68XdIn37u9mHEFyxHy8O-2RMNf1bO0HeAdoT9oDBCK6qo0J6wG0lTL6qN7yoRJELRwjrlGjOtjA21gUwdTZI1S3zBce2/s1600/carretilha.png', rel: 'icon', sizes: '128x128', type: 'image/png' },
+    { href: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZvkaXz0ycrIvvoXGhx0Z1Fj2oYdb-Hvpmw0dmXjANx64qjmXfyD4fXR695Aqs6mwPNl2L-KTanCOAODXoLbSmOK34pAkp68XdIn37u9mHEFyxHy8O-2RMNf1bO0HeAdoT9oDBCK6qo0J6wG0lTL6qN7yoRJELRwjrlGjOtjA21gUwdTZI1S3zBce2/s1600/carretilha.png', rel: 'apple-touch-icon', sizes: '152x152' },
+    { href: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZvkaXz0ycrIvvoXGhx0Z1Fj2oYdb-Hvpmw0dmXjANx64qjmXfyD4fXR695Aqs6mwPNl2L-KTanCOAODXoLbSmOK34pAkp68XdIn37u9mHEFyxHy8O-2RMNf1bO0HeAdoT9oDBCK6qo0J6wG0lTL6qN7yoRJELRwjrlGjOtjA21gUwdTZI1S3zBce2/s1600/carretilha.png', rel: 'apple-touch-icon', sizes: '167x167' },
+    { href: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZvkaXz0ycrIvvoXGhx0Z1Fj2oYdb-Hvpmw0dmXjANx64qjmXfyD4fXR695Aqs6mwPNl2L-KTanCOAODXoLbSmOK34pAkp68XdIn37u9mHEFyxHy8O-2RMNf1bO0HeAdoT9oDBCK6qo0J6wG0lTL6qN7yoRJELRwjrlGjOtjA21gUwdTZI1S3zBce2/s1600/carretilha.png', rel: 'apple-touch-icon', sizes: '180x180' },
+    { href: 'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhZvkaXz0ycrIvvoXGhx0Z1Fj2oYdb-Hvpmw0dmXjANx64qjmXfyD4fXR695Aqs6mwPNl2L-KTanCOAODXoLbSmOK34pAkp68XdIn37u9mHEFyxHy8O-2RMNf1bO0HeAdoT9oDBCK6qo0J6wG0lTL6qN7yoRJELRwjrlGjOtjA21gUwdTZI1S3zBce2/s1600/carretilha.png', rel: 'icon', sizes: '192x192', type: 'image/png' }
+  ];
+
+  var head = document.getElementsByTagName('head')[0];
+
+  for (var i = 0; i < favicons.length; i++) {
+    var link = document.createElement('link');
+    link.href = favicons[i].href;
+    link.rel = favicons[i].rel;
+    link.sizes = favicons[i].sizes;
+    link.type = favicons[i].type;
+    head.appendChild(link);
+  }
+}
+
+addFavicons();
+      
+      
+  function getMovieIDFromURL() {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get("vd");
+}
+
+function getPrimaryColorFromVideo(video) {
+  if (video && video.color) {
+    return "#" + video.color;
+  }
+  return "#ffffff";
+}
+
+function setDocumentTitle(video) {
+  if (video && video.nome) {
+    document.title = video.nome;
+  }
+}
+
+function checkVideoStatus(video) {
+  if (video && video.sts === "off") {
+    alert("Esse Filme está Off");
+    window.location.href = "https://moviemil.blogspot.com";
+  }
+}
+
+const jsonUrl = "https://script.google.com/macros/s/AKfycbyrUt-UJNKfAGJ7cH3teSob9ZNaF74X3BkuZ7QWgAtlz2P1oNAFr3NFS1Il7FTMqgEP/exec";
+const apiBaseUrl = "https://api.themoviedb.org/3/";
+const apiKey = "dd8b9b0ba16a7a2e167615c6de0d99a0"; // Substitua pelo seu próprio API key do themoviedb
+
+// Crie o objeto FormData com os parâmetros desejados
+const formData = new FormData();
+formData.append("Function", "ExportJSON");
+formData.append("page", "Filmes");
+
+fetch(jsonUrl, {
+  method: "POST",
+  body: formData
+})
+  .then(response => response.json())
+  .then(data => {
+    const movieID = getMovieIDFromURL();
+    const movieData = data.find(item => item.ID.toString() === movieID);
+
+    if (movieData) {
+      checkVideoStatus(movieData);
+
+      let videoSource;
+      if (movieData.stream === "mp4") {
+        videoSource = movieData.player;
+      } else if (movieData.stream === "drive") {
+        videoSource = `https://www.googleapis.com/drive/v3/files/${movieData.player}?key=AIzaSyDY5_iV-9HHm2u3bYef5sZ5Kc5Jd_4we9s&alt=media`;
+      }
+
+      const videoElement = document.getElementById("video-id");
+      videoElement.innerHTML = `<source src="${videoSource}" type="video/mp4">`;
+
+      videoElement.onloadeddata = function() {
+        const divToHide = document.querySelector(".psload");
+        if (divToHide) {
+          divToHide.classList.add("fade-out");
+          divToHide.addEventListener("animationend", function() {
+            divToHide.style.display = "none";
+          });
+        } else {
+          console.log("Elemento com a classe 'psload' não encontrado.");
+        }
+      };
+
+      // Obter os detalhes do filme para obter o título e o banner em português
+      fetch(`${apiBaseUrl}movie/${movieData.ID}?api_key=${apiKey}&language=pt-BR`)
+        .then(response => response.json())
+        .then(data => {
+          const titulo = data.title;
+          const bannerPath = data.backdrop_path;
+          const bannerUrl = `https://image.tmdb.org/t/p/original${bannerPath}`;
+          document.title = titulo;
+          videoElement.setAttribute("poster", bannerUrl);
+
+          const divOpss = document.querySelector(".opss");
+          const divOprr = document.querySelector(".oprr");
+
+          if (divOpss && divOprr) {
+            if (divOpss.style.display !== "none" && divOpss.style.display !== "") {
+              if (movieData) {
+                divOprr.style.display = "flex";
+              } else {
+                divOprr.style.display = "none";
+              }
+            } else {
+              if (movieData) {
+                divOprr.style.display = "";
+              } else {
+                divOprr.style.display = "flex";
+              }
+            }
+          } else {
+            console.log("Elementos 'opss' ou 'oprr' não encontrados.");
+          }
+        })
+        .catch(error => {
+          console.log("Erro ao obter o título e o banner do filme:", error);
+        });
+
+      setDocumentTitle(movieData);
+
+      // Remover chaves desnecessárias
+      delete movieData.mp4Url;
+      delete movieData.gdID;
+    } else {
+      console.log("Filme não encontrado!");
+
+      const divOpss = document.querySelector(".opss");
+      const divOprr = document.querySelector(".oprr");
+
+      if (divOpss && divOprr) {
+        divOpss.style.display = "flex";
+        divOprr.style.display = "none";
+      } else {
+        console.log("Elementos 'opss' ou 'oprr' não encontrados.");
+      }
+    }
+  })
+  .catch(error => {
+    console.log("Erro ao carregar o JSON:", error);
+  });
+
+
+
+
+
+
+	
+    	const container = document.querySelector(".container"),
+mainVideo = container.querySelector("video"),
+videoTimeline = container.querySelector(".video-timeline"),
+progressBar = container.querySelector(".progress-bar"),
+volumeBtn = container.querySelector(".volume i"),
+volumeSlider = container.querySelector(".left input");
+currentVidTime = container.querySelector(".current-time"),
+videoDuration = container.querySelector(".video-duration"),
+skipBackward = container.querySelector(".skip-backward i"),
+skipForward = container.querySelector(".skip-forward i"),
+playPauseBtn = container.querySelector(".play-pause i"),
+speedBtn = container.querySelector(".playback-speed span"),
+speedOptions = container.querySelector(".speed-options"),
+pipBtn = container.querySelector(".pic-in-pic span"),
+fullScreenBtn = container.querySelector(".fullscreen i");
+let timer;
+
+const hideControls = () => {
+    if(mainVideo.paused) return;
+    timer = setTimeout(() => {
+        container.classList.remove("show-controls");
+    }, 3000);
+}
+hideControls();
+
+container.addEventListener("mousemove", () => {
+    container.classList.add("show-controls");
+    clearTimeout(timer);
+    hideControls();   
+});
+
+const formatTime = time => {
+    let seconds = Math.floor(time % 60),
+    minutes = Math.floor(time / 60) % 60,
+    hours = Math.floor(time / 3600);
+
+    seconds = seconds < 10 ? `0${seconds}` : seconds;
+    minutes = minutes < 10 ? `0${minutes}` : minutes;
+    hours = hours < 10 ? `0${hours}` : hours;
+
+    if(hours == 0) {
+        return `${minutes}:${seconds}`
+    }
+    return `${hours}:${minutes}:${seconds}`;
+}
+
+videoTimeline.addEventListener("mousemove", e => {
+    let timelineWidth = videoTimeline.clientWidth;
+    let offsetX = e.offsetX;
+    let percent = Math.floor((offsetX / timelineWidth) * mainVideo.duration);
+    const progressTime = videoTimeline.querySelector("span");
+    offsetX = offsetX < 20 ? 20 : (offsetX > timelineWidth - 20) ? timelineWidth - 20 : offsetX;
+    progressTime.style.left = `${offsetX}px`;
+    progressTime.innerText = formatTime(percent);
+});
+
+videoTimeline.addEventListener("click", e => {
+    let timelineWidth = videoTimeline.clientWidth;
+    mainVideo.currentTime = (e.offsetX / timelineWidth) * mainVideo.duration;
+});
+
+mainVideo.addEventListener("timeupdate", e => {
+    let {currentTime, duration} = e.target;
+    let percent = (currentTime / duration) * 100;
+    progressBar.style.width = `${percent}%`;
+    currentVidTime.innerText = formatTime(currentTime);
+});
+
+mainVideo.addEventListener("loadeddata", () => {
+    videoDuration.innerText = formatTime(mainVideo.duration);
+});
+
+const draggableProgressBar = e => {
+    let timelineWidth = videoTimeline.clientWidth;
+    progressBar.style.width = `${e.offsetX}px`;
+    mainVideo.currentTime = (e.offsetX / timelineWidth) * mainVideo.duration;
+    currentVidTime.innerText = formatTime(mainVideo.currentTime);
+}
+
+volumeBtn.addEventListener("click", () => {
+    if(!volumeBtn.classList.contains("fa-volume-high")) {
+        mainVideo.volume = 0.5;
+        volumeBtn.classList.replace("fa-volume-xmark", "fa-volume-high");
+    } else {
+        mainVideo.volume = 0.0;
+        volumeBtn.classList.replace("fa-volume-high", "fa-volume-xmark");
+    }
+    volumeSlider.value = mainVideo.volume;
+});
+
+volumeSlider.addEventListener("input", e => {
+    mainVideo.volume = e.target.value;
+    if(e.target.value == 0) {
+        return volumeBtn.classList.replace("fa-volume-high", "fa-volume-xmark");
+    }
+    volumeBtn.classList.replace("fa-volume-xmark", "fa-volume-high");
+});
+
+speedOptions.querySelectorAll("li").forEach(option => {
+    option.addEventListener("click", () => {
+        mainVideo.playbackRate = option.dataset.speed;
+        speedOptions.querySelector(".active").classList.remove("active");
+        option.classList.add("active");
+    });
+});
+
+document.addEventListener("click", e => {
+    if(e.target.tagName !== "SPAN" || e.target.className !== "material-symbols-rounded") {
+        speedOptions.classList.remove("show");
+    }
+});
+
+fullScreenBtn.addEventListener("click", () => {
+    container.classList.toggle("fullscreen");
+    if(document.fullscreenElement) {
+        fullScreenBtn.classList.replace("fa-compress", "fa-expand");
+        return document.exitFullscreen();
+    }
+    fullScreenBtn.classList.replace("fa-expand", "fa-compress");
+    container.requestFullscreen();
+});
+
+speedBtn.addEventListener("click", () => speedOptions.classList.toggle("show"));
+pipBtn.addEventListener("click", () => mainVideo.requestPictureInPicture());
+skipBackward.addEventListener("click", () => mainVideo.currentTime -= 5);
+skipForward.addEventListener("click", () => mainVideo.currentTime += 5);
+mainVideo.addEventListener("play", () => playPauseBtn.classList.replace("fa-play", "fa-pause"));
+mainVideo.addEventListener("pause", () => playPauseBtn.classList.replace("fa-pause", "fa-play"));
+playPauseBtn.addEventListener("click", () => mainVideo.paused ? mainVideo.play() : mainVideo.pause());
+videoTimeline.addEventListener("mousedown", () => videoTimeline.addEventListener("mousemove", draggableProgressBar));
+document.addEventListener("mouseup", () => videoTimeline.removeEventListener("mousemove", draggableProgressBar));
+</script>
+  </body>
+</html>
